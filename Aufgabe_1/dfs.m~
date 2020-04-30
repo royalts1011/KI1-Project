@@ -22,17 +22,15 @@ iter = 0;
 while iter < 10000
     iter = iter + 1;
     curr = nodes(end);
-    visited = false;
+    
     for i = 1: length(discovered)
         if discovered(i) == curr
             L = iter;
-            V = discovered;
-            visited = true;
+            V = 'Circle detected';
+            break
         end
     end
-    if visited
-        break
-    end
+    
     discovered(end + 1) = curr;
     nodes(end) = [];
     
@@ -51,4 +49,6 @@ while iter < 10000
         
     end
 end
-       
+        L = iter;
+        found_node = 0;
+        V = discovered;

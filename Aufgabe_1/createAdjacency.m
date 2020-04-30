@@ -10,32 +10,20 @@ A = zeros(size, size);
 % o - o - o - ...
 % |   |   |   ...
 % ...
-
-for i = 1:length(A)
-    A(i,i) = 1;
-    % nach rechts begrenzen:
-    if (mod(i, sqrtSize) ~= 0) 
-        A(i, i + 1) = 1;
-        A(i + 1, i) = 1;
-    end
-    
-    % nach links begrenzt
-    if (mod(i, sqrtSize) ~= 1) 
-        A(i, i - 1) = 1;
-        A(i - 1, i) = 1;
-    end
-    
-    % nach oben begrenzt:
-    if (i - sqrtSize >= 1)
-        A(i, i - sqrtSize) = 1;
-        A(i - sqrtSize, i) = 1;
-    end     
-    
-    % nach unten begrenzen:
-    if (i <= length(A) - sqrtSize)
-        A(i, i + sqrtSize) = 1;
-        A(i + sqrtSize, i) = 1;
-    end     
+test = dec2bin(15)
+test(2) = ~test(2)
+for i = 1:size
+    for j = 1:size
+        
+        i_bin = dec2bin(i-1,12);
+        j_bin = dec2bin(j-1,12);
+        number_of_similar_bits = sum(i_bin==j_bin);
+        
+        if 12 == number_of_similar_bits + 1
+            A(i,j) = 1;
+            A(j,i) = 1;
+        end
+    end    
 end
-
+fprintf("done");
 save('Adjacency.mat','A')

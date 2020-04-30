@@ -20,10 +20,10 @@ startState= [0,0,0;
              0,0,0;
              0,0,0;
              0,0,0];
-goalState= [0,0,0;
-            1,0,1;
+goalState= [1,1,1;
             1,1,1;
-            1,0,1];
+            1,1,1;
+            1,1,1];
 
 %% Breitensuche als Graphsuche
 %starte Timer
@@ -61,5 +61,8 @@ tstart=tic;
 %Ausgabe:
 fprintf('\n Einfache Tiefensuche:\n')
 fprintf(['Anzahl besuchter Knoten: ' num2str(length(V_d)) '\n'])
-fprintf(['Besuchte Knoten: ' num2str(V_d) '\n'])
+%fprintf(['Besuchte Knoten: ' num2str(V_d) '\n'])
+for i = 1: length(V_d)
+    fprintf(reshape(flip(de2bi(V_d(i),12)),4,3));
+end
 fprintf(['Benoetigte Zeit: ' num2str(toc(tstart)) '\n'])
