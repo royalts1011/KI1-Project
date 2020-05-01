@@ -32,8 +32,8 @@ while ~isempty(queue)
          return                                     % beenden.
     end
 
-    current = queue(end);           % Vorne aus der Queue wir der erste Knoten genommen.
-    queue(end) = [];                % Knoten aus Warteschlange wird gelöscht                   
+    current = queue(end);         % Vorne aus der Queue wir der erste Knoten genommen.
+    queue(end) = [];              % Knoten aus Warteschlange wird gelöscht                   
     V = [V, current];             % Knoten wird dem Pfad hinzugefügt
 
 
@@ -43,8 +43,8 @@ while ~isempty(queue)
     
     for i = 1 : length(A)
         if discovered(i) == false && A(current+1,i) == 1;    % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
-            discovered(i) = true;          % Wenn Ja Knoten als besucht markieren
-            queue = [queue, i-1];          % Knoten in Warteschlange aufnehmen
+            discovered(i) = true;                            % Wenn Ja Knoten als besucht markieren
+            queue = [queue, i-1];                            % Knoten in Warteschlange aufnehmen
     end
     
                                           

@@ -45,7 +45,7 @@ while ~isempty(queue)
     
     for i = 1 : length(A)
         if  A(current+1,i) == 1    % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
-            queue = [queue, i-1];          % Knoten in Warteschlange aufnehmen
+            queue = [queue, i-1];  % Knoten in Warteschlange aufnehmen
         end
     
                                           
