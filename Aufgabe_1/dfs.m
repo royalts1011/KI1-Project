@@ -1,68 +1,56 @@
-function [ V, L, found_node ] = dfs( A, startState, goalState )
+function [ V, L ] = dfs( A, startState, goalState )
 
-%Implementieren Sie hier die einfache Tiefensuche.
-  
 % flatten the inputs and convert them to Ints:
-startState = reshape(startState', 1, []);
+startState = reshape(startState, 1, []);
 startState = num2str(startState);
 startState = strrep(startState, ' ', '');
-% array starts at 1 not at zero
-startState = bin2dec(startState) + 1 ;
+startState = bin2dec(startState);
 
-goalState = reshape(goalState', 1, []);
+goalState = reshape(goalState, 1, []);
 goalState = num2str(goalState);
 goalState = strrep(goalState, ' ', '');
 goalState = bin2dec(goalState);
 
-found = false;
-node_list = [];
-node_list(1) = startState;
-old_nodes = [];
-L = 0;
 
-while ~found
-    L = L + 1;
-    if L == 4096
-        L = old_nodes;
-        V = 'Not Found';
-        break
+%Implementieren Sie hier die einfache Tiefensuche.
+
+V = [];                                     % Array speichert Knoten des Pfades
+L = [];                                     % Array speichert ???
+max = length(A);                            % Maximale Anzahl besuchter Knoten.
+discovered = false(1,max);                  % Es gibt maximal maxRounds Knoten, die man sich anschauen kann.
+queue = [startState];                       % In der queue ist aktuell nu der Startzustand
+
+while ~isempty(queue)
+    
+    max = max - 1;
+    if max == 0                                     % prüfen, ob maxRounds erreicht wurde
+         fprintf('Suche benoetigt zu viel Zeit')    % wenn ja Schleife
+         return                                     % beenden.
     end
     
-    % curr_idx is last element in queue
-    curr_idx = length(node_list);
-  % -1, da der vorherige den Knoten Codiert, weil idx mit 1 beginnt  
-  if node_list(curr_idx) - 1 == goalState
-      % bei found_node den +1 offset wieder rausrechenen
-      found_node = dec2bin(node_list(curr_idx) - 1);
-      found = true;
-      V = old_nodes;
-      V(end + 1) = node_list(curr_idx);
-  else
-       % circle detection:
-      if in_array(node_list(curr_idx),old_nodes)
-          L = old_nodes;
-          V = 'circle detected';
-          break
-      end
- 
-      idx_ls = A(node_list(curr_idx),:);
-      old_nodes(end + 1) = node_list(curr_idx);
-      for i = 1:length(idx_ls)
-        node_list(end + 1) =  i;   
-      end
-      node_list(curr_idx) = [];
-  end
-  
-  
-end
-        
-end
-
-function [bool] = in_array(e, A)
-    bool = false;    
-    for i = 1:length(A)
-        if e == A(i)
-            bool = true;          
-        end
+    current = queue(end); 
+    if discovered(current+1) == true
+        return
     end
+    
+                                    % Vorne aus der Queue wir der erste Knoten genommen.
+    discovered(current+1) = true;   % Wenn Ja Knoten als besucht markieren
+    queue(end) = [];                % Knoten aus Warteschlange wird gelöscht                   
+    V = [V, current];               % Knoten wird dem Pfad hinzugefügt
+
+
+    if current == goalState       % Prüfen, ob current unser Ziel ist
+        return                    % Wenn ja beenden, da gefunden.
+    end
+    
+    for i = 1 : length(A)
+        if  A(current+1,i) == 1    % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
+            queue = [queue, i-1];          % Knoten in Warteschlange aufnehmen
+        end
+    
+                                          
+    end
+
+end
+    
 end

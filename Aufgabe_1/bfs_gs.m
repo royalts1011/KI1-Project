@@ -1,62 +1,53 @@
-function [ V, L, found_node ] = bfs_gs( A, startState, goalState )
-
-%Implementieren Sie hier die Breitensuche als Graphsuche.
+function [ V, L ] = bfs_gs( A, startState, goalState )
 
 % flatten the inputs and convert them to Ints:
-startState = reshape(startState', 1, []);
+startState = reshape(startState, 1, []);
 startState = num2str(startState);
 startState = strrep(startState, ' ', '');
-% array starts at 1 not at zero
-startState = bin2dec(startState) + 1 ;
+startState = bin2dec(startState);
 
-goalState = reshape(goalState', 1, []);
+goalState = reshape(goalState, 1, []);
 goalState = num2str(goalState);
 goalState = strrep(goalState, ' ', '');
 goalState = bin2dec(goalState);
 
-found = false;
-node_list = [];
-node_list(1) = startState;
-old_nodes = [];
-L = 0;
 
-while ~found
-  
-  % -1, da der vorherige den Knoten Codiert, weil idx mit 1 beginnt  
-  if node_list(1) - 1 == goalState
-      % bei found node den +1 offset wieder rausrechenen
-      found_node = dec2bin(node_list(1) - 1);
-      found = true;
-      V = old_nodes;
-      V(end + 1) = node_list(1);
-  else
-      idx_ls = A(node_list(1),:);
-      old_nodes(end + 1) = node_list(1);
-      for i = 1:length(idx_ls)
-        if idx_ls(i) == 1 & ~(in_array(i, old_nodes)) & ~(in_array(i, node_list)) 
-            node_list(end + 1) =  i;
-        end     
-      end
-      node_list(1) = [];
-      
-      L = L + 1;
-      if L == 4096
-        L = 'Not Found';
-        V = 'Not Found';
-        break
-      end
-  end
-  
-  
-end
-        
-end
+%Implementieren Sie hier die Breitensuche als Graphsuche.
 
-function [bool] = in_array(e, A)
-    bool = false;    
-    for i = 1:length(A)
-        if e == A(i)
-            bool = true;          
-        end
+V = [];                                     % Array speichert Knoten des Pfades
+L = [];                                     % Array speichert ???
+max = length(A);                            % Maximale Anzahl besuchter Knoten.
+discovered = false(1,max);                  % Es gibt maximal maxRounds Knoten, die man sich anschauen kann.
+queue = [startState];                       % In der queue ist aktuell nu der Startzustand
+discovered(startState + 1) = true;          % Da Startzustand bereits betrachtet, setzen wir
+                                            % in discovered auf bereits
+                                            % besucht(true). +1, da wir bei
+                                            % 1 Anfangen zu zählen.
+
+while ~isempty(queue)
+    
+    max = max - 1;
+    if max == 0                                     % prüfen, ob maxRounds erreicht wurde
+         fprintf('Suche benoetigt zu viel Zeit')    % wenn ja Schleife
+         return                                     % beenden.
     end
+
+    current = queue(1);           % Vorne aus der Queue wir der erste Knoten genommen.
+    queue(1) = [];                % Knoten aus Warteschlange wird gelöscht                   
+    V = [V, current];             % Knoten wird dem Pfad hinzugefügt
+
+
+    if current == goalState       % Prüfen, ob current unser Ziel ist
+        return                    % Wenn ja beenden, da gefunden.
+    end
+    
+    for i = 1 : length(A)
+        if discovered(i) == false && A(current+1,i) == 1;    % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
+            discovered(i) = true;          % Wenn Ja Knoten als besucht markieren
+            queue = [queue, i-1];          % Knoten in Warteschlange aufnehmen
+    end
+    
+                                          
+end
+
 end

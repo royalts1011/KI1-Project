@@ -30,7 +30,7 @@ goalState= [0,0,0;
 tstart=tic;
 
 %Führe Breitensuche als Graphsuche durch
-[ V_b, L_b, found_node_b ] = bfs_gs( A, startState, goalState );
+[ V_b, L_b ] = bfs_gs( A, startState, goalState );
 
 %Ausgabe:
 fprintf('\n Breitensuche als Graphsuche:\n')
@@ -43,7 +43,7 @@ fprintf(['Benoetigte Zeit: ' num2str(toc(tstart)) '\n'])
 tstart=tic;
 
 %Führe Tiefensuche als Graphsuche durch
-[ V_dgs, L_dgs, found_node_dgs ] = dfs_gs( A, startState, goalState );
+[ V_dgs, L_dgs ] = dfs_gs( A, startState, goalState );
 
 %Ausgabe:
 fprintf('\n Tiefensuche als Graphsuche:\n')

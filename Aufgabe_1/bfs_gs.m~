@@ -1,18 +1,6 @@
-function [ V, L ] = dfs_gs( A, startState, goalState )
-    
-% flatten the inputs and convert them to Ints:
-startState = reshape(startState, 1, []);
-startState = num2str(startState);
-startState = strrep(startState, ' ', '');
-startState = bin2dec(startState);
+function [ V, L ] = bfs_gs( A, startState, goalState )
 
-goalState = reshape(goalState, 1, []);
-goalState = num2str(goalState);
-goalState = strrep(goalState, ' ', '');
-goalState = bin2dec(goalState);
-
-
-%Implementieren Sie hier die Tiefensuche als Graphsuche.
+%Implementieren Sie hier die Breitensuche als Graphsuche.
 
 V = [];                                     % Array speichert Knoten des Pfades
 L = [];                                     % Array speichert ???
@@ -32,19 +20,20 @@ while ~isempty(queue)
          return                                     % beenden.
     end
 
-    current = queue(end);           % Vorne aus der Queue wir der erste Knoten genommen.
-    queue(end) = [];                % Knoten aus Warteschlange wird gelöscht                   
+    current = queue(1)           % Vorne aus der Queue wir der erste Knoten genommen.
+    queue(1) = [];                % Knoten aus Warteschlange wird gelöscht                   
     V = [V, current];             % Knoten wird dem Pfad hinzugefügt
 
 
     if current == goalState       % Prüfen, ob current unser Ziel ist
         return                    % Wenn ja beenden, da gefunden.
     end
-    
-    for i = 1 : length(A)
-        if discovered(i) == false && A(current+1,i) == 1;    % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
-            discovered(i) = true;          % Wenn Ja Knoten als besucht markieren
-            queue = [queue, i-1];          % Knoten in Warteschlange aufnehmen
+
+    for i = 1 : max
+        break
+        if discovered(i) == false && A(current+1,i) == 1
+            discovered(i) = true
+            queue = [queue, i-1]
     end
     
                                           
