@@ -53,22 +53,15 @@ for k = 1:maxIter
     % TODO: Selektiert die besten Individuen.
     for i=1:nDeaths
         weekAnt = min(fitness); %schwaechstes Ameise bestimmen
-        idx = find(weekAnt == fitness); %Index der Ameise
+        s = find(fitness==m,1); %Index der Ameise
         %Ameise entfernen
-        P(idx,:,:)=[];
-        fitness(idx)=[]; 
+        fitness(s)=[]; 
+        P(s,:,:)=[];
     end
-
+ 
     
     % Rekombination.
     % TODO: Generiert neue Individuen aus Überlebenden durch Rekombination.
-    
-    %Berechne relative Fitness zur Fortpflanzung
-    reprod = zeros(nSurv,1);
-    totalFitenss = sum(fitness);
-    for j = 1 : nSurv
-        reprod(j) = fitness(j)/totalFitenss;
-    end
 
     
     % Mutation.

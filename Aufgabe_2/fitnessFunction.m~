@@ -1,0 +1,13 @@
+function [fitness] = fitnessFunction(actualAnt)
+    antV = ant(:);                    % Wandel perfekte Ameise in Vektor um.
+    actualAntV = actualAnt(:);        % Wandel aktuelle Ameie in Vektor um.
+    counter = 0;                      % Zähler für (
+    
+    if antV ~= actualAnt
+        notEqualElements = notEqualElements + 1;
+    end
+        
+    
+    
+
+end
