@@ -18,22 +18,25 @@ V = [];                                     % Array speichert Knoten des Pfades
 L = [];                                     % Array speichert ???
 max = length(A);                            % Maximale Anzahl besuchter Knoten.
 discovered = false(1,max);                  % Es gibt maximal maxRounds Knoten, die man sich anschauen kann.
-queue = [startState];                       % In der queue ist aktuell nu der Startzustand
+queue = [startState];                       % In der queue ist aktuell nur der Startzustand
 discovered(startState + 1) = true;          % Da Startzustand bereits betrachtet, setzen wir
                                             % in discovered auf bereits
-                                            % besucht(true). +1, da wir bei
-                                            % 1 Anfangen zu zählen.
+                                            % besucht(true). 
+                                            % +1, da discovered von 1...n
+                                            % läuft. Während die Zustände
+                                            % von 0 bis n-1 gehen.
+                                           
 
 while ~isempty(queue)
     
-    max = max - 1;
-    if max == 0                                     % prüfen, ob maxRounds erreicht wurde
-         fprintf('Suche benoetigt zu viel Zeit')    % wenn ja Schleife
+    max = max - 1;                                  % max um 1 decrementieren
+    if max == 0                                     % prüfen, ob max erreicht wurde
+         fprintf('Zu Viele Durchlaeufe')            % wenn ja Schleife
          return                                     % beenden.
     end
 
-    current = queue(1);           % Vorne aus der Queue wir der erste Knoten genommen.
-    queue(1) = [];                % Knoten aus Warteschlange wird gelöscht                   
+    current = queue(1);         % Vorne aus der Queue wir der erste Knoten genommen. FIFO
+    queue(1) = [];              % Knoten aus Warteschlange wird gelöscht                   
     V = [V, current];             % Knoten wird dem Pfad hinzugefügt
 
 
@@ -41,10 +44,10 @@ while ~isempty(queue)
         return                    % Wenn ja beenden, da gefunden.
     end
     
-    for i = 1 : length(A)
+    for i = 1 : length(A)                                    % Hier wollen wir alle Verbindungen hinzufügen
         if discovered(i) == false && A(current+1,i) == 1;    % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
-            discovered(i) = true;          % Wenn Ja Knoten als besucht markieren
-            queue = [queue, i-1];          % Knoten in Warteschlange aufnehmen
+            discovered(i) = true;                            % Wenn Ja Knoten als besucht markieren
+            queue = [queue, i-1];                            % Knoten in Warteschlange aufnehmen -1 wieder da Knotenwerte um 1 verschoben
     end
     
                                           

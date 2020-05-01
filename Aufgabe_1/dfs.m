@@ -28,22 +28,22 @@ while ~isempty(queue)
          return                                     % beenden.
     end
     
-    current = queue(end); 
-    if discovered(current+1) == true
-        return
-    end
+    current = queue(end);                   % Hinten aus der Queue wir der erste Knoten genommen. LIFO
     
-                                    % Vorne aus der Queue wir der erste Knoten genommen.
-    discovered(current+1) = true;   % Wenn Ja Knoten als besucht markieren
-    queue(end) = [];                % Knoten aus Warteschlange wird gelöscht                   
-    V = [V, current];               % Knoten wird dem Pfad hinzugefügt
+    if discovered(current+1) == true        % Schauen, ob current bereits besucht wurde, wenn ja return
+        return
+    else                                % SONST
+        discovered(current+1) = true;   % Wenn Ja Knoten als besucht markieren
+        queue(end) = [];                % Knoten aus Warteschlange wird gelöscht                   
+        V = [V, current];               % Knoten wird dem Pfad hinzugefügt
+    end
 
 
     if current == goalState       % Prüfen, ob current unser Ziel ist
         return                    % Wenn ja beenden, da gefunden.
     end
     
-    for i = 1 : length(A)
+    for i = 1 : length(A)          % Hier wollen wir alle Verbindungen hinzufügen
         if  A(current+1,i) == 1    % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
             queue = [queue, i-1];  % Knoten in Warteschlange aufnehmen
         end

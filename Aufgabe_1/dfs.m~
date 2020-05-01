@@ -28,14 +28,13 @@ while ~isempty(queue)
          return                                     % beenden.
     end
     
-    
-    current = queue(end); 
+    current = queue(end);                   % Vorne aus der Queue wir der erste Knoten genommen. LIFO
     if discovered(current+1) == true
         return
     end
     
-              % Vorne aus der Queue wir der erste Knoten genommen.
-    discovered(current+1) = true;          % Wenn Ja Knoten als besucht markieren
+                                    % Vorne aus der Queue wir der erste Knoten genommen.
+    discovered(current+1) = true;   % Wenn Ja Knoten als besucht markieren
     queue(end) = [];                % Knoten aus Warteschlange wird gelöscht                   
     V = [V, current];               % Knoten wird dem Pfad hinzugefügt
 
@@ -46,7 +45,7 @@ while ~isempty(queue)
     
     for i = 1 : length(A)
         if  A(current+1,i) == 1    % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
-            queue = [queue, i-1];          % Knoten in Warteschlange aufnehmen
+            queue = [queue, i-1];  % Knoten in Warteschlange aufnehmen
         end
     
                                           
