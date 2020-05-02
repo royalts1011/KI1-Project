@@ -1,0 +1,32 @@
+%Berechnen Sie hier Ihre Adjazenzmatrix.
+
+size = 4096;
+sqrtSize = sqrt(size);
+A = zeros(size, size);
+
+% Graph definitiont insges. 4096 = 64 x 64 
+% o - o - o - ...
+% |   |   |   ...
+% o - o - o - ...
+% |   |   |   ...
+% ...
+test = dec2bin(15)
+test(2) = ~test(2)
+foo = dec2bin(31,12)+ '000000000001'
+foo2 = de2bi(4095,12)
+foo2(3) = ~foo2(3);
+foo2
+
+
+for n = 1:size
+        
+   n_bin = de2bi(i,12);
+   for i = 1:12
+      m_bin = n_bin;
+      m_bin(i) = ~m_bin(i);
+      A(i,bi2de(m_bin)) = 1;
+   end
+    
+end
+fprintf("done");
+save('Adjacency.mat','A')

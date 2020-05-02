@@ -1,21 +1,17 @@
 %Berechnen Sie hier Ihre Adjazenzmatrix.
-binaryLength = 12;                              % 3x4 Matrix
-m_size = 4096;                                  % 2^12, da wir in der 3x4 Matrix jeweils 0 oder 1 an jeder Stelle haben können.
 
-A=zeros(m_size);
-for i = 1:m_size
-    for j = 1:m_size
+size = 4096;
+A = zeros(size, size);
+
+for n = 1:size
         
-        i_bin = dec2bin(i-1,12);
-        j_bin = dec2bin(j-1,12);
-        number_of_similar_bits = sum(i_bin==j_bin);
-        
-        if 12 == number_of_similar_bits + 1
-            A(i,j) = 1;
-            A(j,i) = 1;
-        end
-    end    
+   n_bin = de2bi(n-1,12);
+   for i = 1:12
+      m_bin = n_bin;
+      m_bin(i) = ~m_bin(i);
+      A(n,bi2de(m_bin)+1) = 1;
+      A(bi2de(m_bin)+1,n) = 1;
+   end
+    
 end
-
-fprintf("done");
 save('Adjacency.mat','A')
