@@ -11,16 +11,14 @@ set(gcf, 'PaperSize', [29.7 21.0]);
 % Lade Daten.
 load('ant.mat');
 [x, y] = size(ant);
-sum(ant(:) == 1)
 % Setze Parameter.
 n = 10;
 % TODO: Setzt die Parameter eures Genetischen Algorithmus.
 nSurv = 2;
 nDeaths = n - nSurv;
-nMutations = 10;
-mutationNumber = 30;
-var = 1;
+nMutations = 9;
 maxIter = 8000;
+randdist = 0.1;
  
  
 % Initialisierung.
@@ -32,7 +30,7 @@ fitness = zeros(n, 1);
 % TODO: Kommentiert/Unkommentiert eine der Zeilen, um eine der Startpopulationen zu erhalten.
 for i = 1:n
    P(i, :, :) = round(rand(x, y));
-    %P(i, :, :) = antdummy;
+   %P(i, :, :) = antdummy;
 end
  
 % Initiale Fitness.
@@ -51,17 +49,16 @@ for i = 1:n
 end
  
 for k = 1:maxIter
-    if mod(k,100) == 0
-        var = var + 0.1;
-     
-        
-    end
     if mod(k,1000) == 0
         k
+        %randdist = randdist / 10;
         fitness
-        mutationNumber = ceil(mutationNumber /1.5);
-        %sum(P(1,:,:) == 1)
         
+    end
+     if mod(k,250) == 0
+        
+        randdist = randdist / 1.5;
+
     end
     % Selektion.
     % TODO: Selektiert die besten Individuen.
@@ -83,10 +80,6 @@ for k = 1:maxIter
     reprod = zeros(1);
     foo = zeros(1,nSurv);
     totalFitness = sum(fitness);
-    for j = 1 : nSurv
-        reprod(j) = fitness(j)/totalFitness;
-    end
-    
     for j = 1 : nSurv
         reprod(j) = fitness(j)/totalFitness;
         foo(j) = j;
@@ -115,13 +108,14 @@ for k = 1:maxIter
     % TODO: Mutiere zufï¿½llig die neuen Individuen.
     mutations = randsrc(1,nMutations,[1 2 3 4 5 6 7 8 9 10]);%Zu mutierende individuen
     for i = 1 : nMutations
-        for j = 1 : 50%mutationNumber%ceil(maxIter/500- var*var)  %ceil(100 / (var*var))
+        %current best value: 100
+        for j = 1 : 150%mutationNumber%ceil(maxIter/500- var*var)  %ceil(100 / (var*var))
             val1 = randi([1 198], 1);
             val2 = randi([1 160], 1);
             %newval = floor((P(mutations(i),max(1,val1-1),val2) + P(mutations(i),min(val1+1,198),val2) + P(mutations(i),val1,max(1,val2-1))+ P(mutations(i),val1,min(val2+1,160)))/3);
-            newval = [P(mutations(i),max(1,val1-1),val2), P(mutations(i),min(val1+1,198),val2), P(mutations(i),val1,max(1,val2-1)), P(mutations(i),val1,min(val2+1,160))];
+            newval = [0,1,P(mutations(i),max(1,val1-1),val2), P(mutations(i),min(val1+1,198),val2), P(mutations(i),val1,max(1,val2-1)), P(mutations(i),val1,min(val2+1,160))];
             
-            P(mutations(i),val1,val2) = newval(randi([1 4],1));%~P(mutations(i),val1,val2);
+            P(mutations(i),val1,val2) = newval(randsrc(1,1,[[1 2 3 4 5 6];[randdist randdist 0.25-randdist/2 0.25-randdist/2 0.25-randdist/2 0.25-randdist/2]]));%~P(mutations(i),val1,val2);
         end
     end
     % Fitness-Update.
