@@ -6,11 +6,11 @@ function [fitness] = fitnessFunction(actualAnt)
     counter = 0;                      % Zähler für == Elemente
     
     for i = 1 : length(antV)
-        if antV(i) == actualAntV(i);
+        if antV(i) == actualAntV(i)
            counter = counter + 1;        % Zähler für gleiche Pixel
         end
     end
     
-    fitness = counter/length(antV)   % Prozentualer Anteil gleicher Pixel
+    fitness = counter/length(antV);   % Prozentualer Anteil gleicher Pixel
     
 end
