@@ -18,7 +18,7 @@ n = 10;
 nSurv = 3;
 nDeaths = n - nSurv;
 nMutations = 10;
-maxIter = 100;
+maxIter = 1000;
 
 
 % Initialisierung.
@@ -28,8 +28,8 @@ fitness = zeros(n, 1);
 % Generiere Startpopulation.
 % TODO: Kommentiert/Unkommentiert eine der Zeilen, um eine der Startpopulationen zu erhalten.
 for i = 1:n
-     P(i, :, :) = round(rand(x, y));
-%     P(i, :, :) = antdummy;
+ %  P(i, :, :) = round(rand(x, y));
+     P(i, :, :) = antdummy;
 end
 
 % Initiale Fitness.
@@ -51,28 +51,35 @@ for k = 1:maxIter
     
     % Selektion.
     % TODO: Selektiert die besten Individuen.
+    
     for i=1:nDeaths
         weekAnt = min(fitness); %schwaechstes Ameise bestimmen
         idx = find(weekAnt == fitness); %Index der Ameise
         %Ameise entfernen
-        P(idx,:,:)=[];
-        fitness(idx)=[]; 
+        P(idx(1),:,:)=[];
+        fitness(idx(1))=[]; 
+        
     end
 
     
     % Rekombination.
-    % TODO: Generiert neue Individuen aus Überlebenden durch Rekombination.
+    % TODO: Generiert neue Individuen aus ï¿½berlebenden durch Rekombination.
     
     %Berechne relative Fitness zur Fortpflanzung
     reprod = zeros(nSurv,1);
-    totalFitenss = sum(fitness);
+    totalFitness = sum(fitness);
     for j = 1 : nSurv
-        reprod(j) = fitness(j)/totalFitenss;
+        reprod(j) = fitness(j)/totalFitness;
     end
-
+    for j = 1 : n
+    par1 = randi([1 3],1);    
+    par
+    par1 = randi([1 3],1); = randi([1 3],1);
+    
+    end
     
     % Mutation.
-    % TODO: Mutiere zufällig die neuen Individuen.
+    % TODO: Mutiere zufï¿½llig die neuen Individuen.
 
     
     % Fitness-Update.
