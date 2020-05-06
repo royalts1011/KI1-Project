@@ -45,7 +45,7 @@ while ~isempty(queue)
     end
     
     for i = 1 : length(A)                                    % Hier wollen wir alle Verbindungen hinzufügen
-        if discovered(i) == false && A(current+1,i) == 1;    % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
+        if discovered(i) == false && A(current+1,i) == 1     % Schauen, ob Knoten unbesucht und ob in A an position eine 1 steht
             discovered(i) = true;                            % Wenn Ja Knoten als besucht markieren
             queue = [queue, i-1];                            % Knoten in Warteschlange aufnehmen -1 wieder da Knotenwerte um 1 verschoben
     end
