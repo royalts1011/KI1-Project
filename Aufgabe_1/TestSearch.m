@@ -18,8 +18,8 @@ load('Adjacency.mat');
 
 %Geben Sie das gewünschte Start und das Gewünschte Ziel an.
 startState= [0,0,0;
-             1,0,0;
-             0,1,0;
+             0,0,0;
+             0,0,0;
              0,0,0];
 goalState= [0,0,0;
             1,0,1;
