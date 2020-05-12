@@ -14,29 +14,35 @@ load('ant.mat');
 % Setze Parameter.
 n = 10;
 % TODO: Setzt die Parameter eures Genetischen Algorithmus.
-nSurv = 2;
-nDeaths = n - nSurv;
-nMutations = 9;
-maxIter = 8000;
-randdist = 0.1;
- 
+nSurv = 2;              % Anzahl überlebene Ameisen definieren
+nDeaths = n - nSurv;    % Anzahl sterbender Ameisen pro Iterationen
+nMutations = 9;         % Anzahl Mutationen pro Iterationen
+maxIter = 8000;         % Anzahl an Iterationen  festlegen
+randdist = 0.1;         
+    
  
 % Initialisierung.
-P = zeros(n, x, y);
-Child = zeros(n, x, y);
-fitness = zeros(n, 1);
+P = zeros(n, x, y);         % Initiale Ameisen
+Child = zeros(n, x, y);     % Kinder Ameisen initialisieren
+fitness = zeros(n, 1);      % fitness Array der Länge der Anzahl Ameisen
  
 % Generiere Startpopulation.
 % TODO: Kommentiert/Unkommentiert eine der Zeilen, um eine der Startpopulationen zu erhalten.
 for i = 1:n
-   P(i, :, :) = round(rand(x, y));
-   %P(i, :, :) = antdummy;
+   P(i, :, :) = round(rand(x, y));          % Runde Ameise als Startzustand
+   %P(i, :, :) = antdummy;                  % Rauschende Ameise als
+                                            % Startzustand
 end
  
 % Initiale Fitness.
 % TODO: Berechnet Fitness der Startpopulation.
 for i = 1:n
-    fitness(i) = fitnessFunction(P(i, :, :));
+    fitness(i) = fitnessFunction(P(i, :, :));       % Funktion wird aufgerufen,
+                                                    % die für
+                                                    % jede Ameise die
+                                                    % Fitness berechnet und
+                                                    % in einem Array
+                                                    % speichert.
 end
  
 % Visualisierung der Startpopulation.
@@ -59,24 +65,22 @@ for k = 1:maxIter
         
         randdist = randdist / 1.5;
 
-    end
+     end
+    
     % Selektion.
     % TODO: Selektiert die besten Individuen.
-    
     for i=1:nDeaths
-        weekAnt = min(fitness); %schwaechstes Ameise bestimmen
-        idx = find(weekAnt == fitness); %Index der Ameise
-        %Ameise entfernen
-        P(idx(1),:,:)=[];
-        fitness(idx(1))=[]; 
+        weekAnt = min(fitness);             % schwaechstes Ameise bestimmen
+        idx = find(weekAnt == fitness);     % Index der schwaechsten Ameise bestimmen
+        P(idx(1),:,:)=[];                   % schwaechste Ameise löschen
+        fitness(idx(1))=[];                 % fitness der schwaechsten Ameise löschen
         
     end
  
     
     % Rekombination.
     % TODO: Generiert neue Individuen aus Ã¯Â¿Â½berlebenden durch Rekombination.
-    
-    %Berechne relative Fitness zur Fortpflanzung
+    % Berechne relative Fitness zur Fortpflanzung
     reprod = zeros(1);
     foo = zeros(1,nSurv);
     totalFitness = sum(fitness);
