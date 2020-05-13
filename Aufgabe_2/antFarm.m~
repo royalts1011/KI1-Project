@@ -1,10 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Namen und Matrikelnummern aller Gruppenmitglieder:
-% Jesse Kruse: 675710 
-% Nils Loose: 675503
-% Falco Lentzsch: 685454 
-% Jan-Ole Penderak: 681555 
-% Meiko Prilop: 681283
+% Jesse Kruse: 675710 Nils Loose: 675503 Falco Lentzsch: 685454 Jan-Ole
+% Penderak: 681555 Meiko Prilop: 681283
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all;
@@ -22,12 +19,13 @@ load('ant.mat');
 [x, y] = size(ant);
 % Setze Parameter.
 n = 10;                 % Anzahl an Ameisen
+% TODO: Setzt die Parameter eures Genetischen Algorithmus.
 nSurv = 2;              % Anzahl ueberlebene Ameisen 
 nDeaths = n - nSurv;    % Anzahl sterbender Ameisen pro Iteration
 nMutations = 9;         % Anzahl Mutationen pro Iterationen
 maxIter = 8000;         % Anzahl an Iterationen  festlegen
-randdist = 0.1;         % In Prozent - Wie Wahrscheinlich ein Pixel 
-                        % unabhängig von seiner Nachbarschaft mutiert
+randdist = 0.1;         % In Prozent - Wie Wahrscheinlich ein Pixel unabhängig
+                        % von seiner Nachbarschaft mutiert
 progress = true;        % Wenn gesetzt wird der Fortschritt während des 
                         % Trainierens angezeigt
     
