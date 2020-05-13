@@ -11,12 +11,7 @@ clear all;
 close all;
 clc;
  
-figure(1);
-set(gcf, 'Units', 'normalized', 'OuterPosition', [0.05 0.05 0.9 0.9]);
-set(gcf, 'PaperOrientation', 'landscape');
-set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0 0 29.7 21]);
-set(gcf, 'PaperSize', [29.7 21.0]);
- 
+
 % Lade Daten.
 load('ant.mat');
 [x, y] = size(ant);
@@ -30,17 +25,28 @@ randdist = 0.1;         % In Prozent - Wie Wahrscheinlich ein Pixel
                         % unabhängig von seiner Nachbarschaft mutiert
 progress = true;        % Wenn gesetzt wird der Fortschritt während des 
                         % Trainierens angezeigt
-    
- 
-% Initialisierung.
+create_gif = false;     % if set to true a gif of the process will be 
+                        % created
+iter = 1;               % used for gif creation
+
+if create_gif
+    set(0,'DefaultFigureVisible','off')
+else
+    figure(1);
+    set(gcf, 'Units', 'normalized', 'OuterPosition', [0.05 0.05 0.9 0.9]);
+    set(gcf, 'PaperOrientation', 'landscape');
+    set(gcf, 'PaperUnits', 'centimeters', 'PaperPosition', [0 0 29.7 21]);
+    set(gcf, 'PaperSize', [29.7 21.0]);
+end
+    % Initialisierung.
 P = zeros(n, x, y);         % Initiale Ameisen
 Child = zeros(n, x, y);     % Kinder Ameisen initialisieren
 fitness = zeros(n, 1);      % fitness Array der Laenge der Anzahl Ameisen
  
 % Generiere Startpopulation.
 for i = 1:n
-   P(i, :, :) = round(rand(x, y));          % Runde Ameise als Startzustand
-   %P(i, :, :) = antdummy;                  % Rauschende Ameise als
+   %P(i, :, :) = round(rand(x, y));          % Runde Ameise als Startzustand
+   P(i, :, :) = antdummy;                  % Rauschende Ameise als
                                             % Startzustand
 end
  
@@ -62,18 +68,34 @@ for i = 1:n
     title(fitness(i), 'FontWeight', 'bold');
 end
  
-for k = 1:maxIter                                   
+for k = 1:maxIter                            
     if mod(k,1000) == 0 && progress == true % logging
-        k
-        fitness
-        
+        k;
+        fitness;
     end
+    if mod(k,10) == 0 && create_gif == true % gif creation
+        fig = figure(); 
+        imagesc(squeeze(P(1, :, :)));
+        axis image;
+        set(gca, 'xtick', [], 'ytick', []);
+        frame = getframe(fig); 
+        im = frame2im(frame); 
+        [imind,cm] = rgb2ind(im,256); 
+        % Write to the GIF File 
+        if iter == 1
+          imwrite(imind,cm,'ant.gif','gif', 'Loopcount',inf','DelayTime',0.03); 
+        else 
+          imwrite(imind,cm,'ant.gif','gif','WriteMode','append','DelayTime',0.03); 
+        end 
+        iter = iter+1;
+    end
+    
      if mod(k,250) == 0                     % Die WS das ein Pixel 
         randdist = randdist / 1.5;          % unabhaengig von seiner 
                                             % Nachbarschaft mutiert nimmt
                                             % alle 250 Iterationen um 50%
                                             % ab. Somit sinkt die Anzahl
-                                            % diese Mutationen während der
+                                            % dieser Mutationen während der
                                             % Laufzeit
      end
     
