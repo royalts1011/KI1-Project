@@ -3,10 +3,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Namen und Matrikelnummern aller Gruppenmitglieder:
 % Jesse Kruse: 675710
-% Nils Loose:
+% Nils Loose: 675503
 % Falco Lentzsch: 685454
-% Jan-Ole:
-
+% Jan-Ole Penderak: 681555
+% Meiko Prilop: 681283
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Lade die leere Leinwand und ein Bild des Holstentores.

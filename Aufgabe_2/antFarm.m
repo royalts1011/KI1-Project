@@ -1,3 +1,12 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Namen und Matrikelnummern aller Gruppenmitglieder:
+% Jesse Kruse: 675710
+% Nils Loose: 675503
+% Falco Lentzsch: 685454
+% Jan-Ole Penderak: 681555
+% Meiko Prilop: 681283
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 clear all;
 close all;
 clc;
