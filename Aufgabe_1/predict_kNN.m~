@@ -8,7 +8,7 @@ function [Y_predict] = predict_kNN(X_train,Y_train,X_test, k)
     pred_list = zeros(k);                   %Label der Nachbarn
     
     %Variable in der die prediction für jedes Testobject steht
-    Y_predict = zeros(size(X_test,1),1);
+    Y_predict = zeros(1,size(X_test,1));
     
     %Iteration über alle Elemente aus X_test
     for subject=1:size(X_test,1)
@@ -18,21 +18,15 @@ function [Y_predict] = predict_kNN(X_train,Y_train,X_test, k)
             dist_list(neighbour,1) = neighbour;
             dist_list(neighbour,2) = euclidean_dist(X_test(subject,:),X_train(neighbour,:));
         end
-        
         %Sortieren der Liste
         dist_list = sortrows(dist_list,2);
-        
-        %Betrachtung der k nächsten Nachbarn
         for neighbour=1:k
             pred_list(neighbour) = Y_train(dist_list(neighbour,1));
         end
-        %Finale pred basierend auf Mehrheitsentscheid
         pred = 0;
         for label=1:k
             pred = pred + pred_list(label);
         end
-        
-        %Speichern der prediction
         Y_predict(subject) = round(pred/k);
     end
 
@@ -40,7 +34,7 @@ function [Y_predict] = predict_kNN(X_train,Y_train,X_test, k)
 
 end
 
-%Berechung der Distanz im n-dimensionalen durch die Euklidische Distanz
+
 function dist = euclidean_dist(current_node, target_node)
     dist = 0;
     for dim=1:size(current_node,2)
