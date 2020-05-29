@@ -1,4 +1,4 @@
-function [Y_pred] = predict_NB(X_train,Y_train,X_test)
+function [Y_predict] = predict_NB(X_train,Y_train,X_test)
 %In dieser Funktion wird ein Naive Bayes Klassifikator genutzt, um auf
 %Basis der Beobachtungen X_train und Y_train eine Klassifikation für X_test
 %zu treffen.
@@ -7,7 +7,7 @@ X_test = quantify_data(X_test);
 [counterZero,counterOne,probZero,probOne] = global_prob(Y_train);
 freq = calc_freq(X_train,Y_train,counterZero,counterOne);
 
-Y_pred = zeros(size(X_test,1),1);
+Y_pred = zeros(size(Y_test));
 for entry=1:size(X_test,1)
     numerator_no = probZero;
     numerator_yes = probOne;
@@ -23,6 +23,7 @@ for entry=1:size(X_test,1)
         Y_pred(entry) = 1;
     end
 end
+    Y_pred
 end
 
 
