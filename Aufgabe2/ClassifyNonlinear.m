@@ -7,7 +7,7 @@ clear;
 clc;
 
 % Variablen
-C=1;
+C=1.0;
 gamma=10;
 
 %Lade Datensatz
@@ -18,20 +18,63 @@ labels_Score = Score >= 7;
 idx_good = find(labels_Score);
 idx_bad =  find(~labels_Score);
 
-% Dataset mit 50:50 (gut:schlecht) erstellen
-dataset1 = SensorData(idx_good,:);
-dataset2 = SensorData(idx_bad(1:length(idx_good)),:);
-dataset = [dataset1; dataset2];
+% nach guten und schlechten auftrennen, um die guten entsprechend zu
+% vervielfältigen.
+data_good = SensorData(idx_good, :);
+data_bad = SensorData(idx_bad,:);
 
-labels1 = labels_Score(idx_good);
-labels2 = labels_Score(idx_bad(1:length(idx_good)));
-labels = [labels1; labels2];
+labeles_good = labels_Score(idx_good);
+labeles_bad = labels_Score(idx_bad);
+
+% Zusammen fassen von Labels und Daten um sie einfacher weiter verarbeiten
+% zu können und die Labels beim tauschen an der richtigen Stelle bleiben.
+dat_lab_good = [data_good, labeles_good];
+dat_lab_bad = [data_bad, labeles_bad];
+
+
+% Dataset mit 50:50 (gut:schlecht) erstellen:
+
+% benötigte Werte berechnen
+num_batch_bad = floor(length(idx_bad)/5);
+num_batch_good = floor(length(idx_good)/5);
+faktor = ceil(num_batch_bad / num_batch_good);
+
+data_lab_good_rep = zeros(size(dat_lab_bad));
+
+% in 5_fach_Kreuzvalidierung benötigen wir 5 Einzelmengen, die jeweils
+% einmal Testmenge sind. Um sicher zustellen, dass in der Trainingsmenge
+% keine Daten vorhanden sind die auch im Test sind werden die guten Weine
+% auch in Fünftel zerlegt. Das erste Fünftel wird dann sieben mal
+% konkatniert und von diesem dann 276 genommen um die richitge Anzahl zu
+% haben. So ist sichergestllt, dass pro fünftel unterschiedliche gute Weite
+% vorhanden sind.
+for i = 1:5
+    
+    offset = (i - 1) * num_batch_good;
+    offset2 = (i - 1) * num_batch_bad;
+    
+    % ein fünftel herauskopieren
+    batch_good_norep = dat_lab_good(1+offset : num_batch_good+offset, :);
+    % um "faktor" (=7) vervielfältigen
+    batch_good = repmat(batch_good_norep, faktor,1);
+    % durch mal 7 ein paar zuviel, daher hier wieder reduktion auf passende
+    % 276
+    batch_good = batch_good(1:num_batch_bad,:);
+    % einsortieren in Gesamtmatrix
+    data_lab_good_rep(1+offset2 :num_batch_bad+offset2, :) = batch_good(:,:);
+    
+end
+% das floor() oben fehlen die letzten beiden Einträge, werden hier noch so
+% hinzugefügt
+data_lab_good_rep(end-1,: ) = batch_good(end-1, :);
+data_lab_good_rep(end,:) = batch_good(end, :);
+
+data_and_labels_sort = [data_lab_good_rep; dat_lab_bad];
+
 
 % Dataset so sortieren, dass immer abwechselnd ein guter und ein schlechter
-% nacheinander stehen. Damit hat man für die einzelmengen sichgestellt,
-% dass immer 50:50 Verhältnis herscht. 
-% Um Labels entsprechend mit zu tauschen werden die beiden konkateniert
-data_and_labels_sort = [dataset, labels];
+% nacheinander stehen. Damit hat man für die Einzelmengen in der Kreuzvalidierung
+% sichgestellt, dass immer 50:50 Verhältnis herscht. 
 idx1 = 1:length(data_and_labels_sort)/2;
 idx2 = length(data_and_labels_sort)/2+1:length(data_and_labels_sort);
 idx = vertcat(idx1,idx2);
@@ -72,11 +115,10 @@ for run = 1:5
     X_train = data(idx_train,:);
     Y_train = labels(idx_train);
     
-   %Beipsielhaftes Training einer SVR. Hier wird ein radial basis function (rbf) Kernel
-   %verwendet.
+    %Beipsielhaftes Training einer SVM. Hier wird ein linearer Kernel
+    %verwendet.
 
-
-    %training
+     %training
     SVMModel_nonlinear=fitcsvm(X_train,Y_train,'BoxConstraint',C,'KernelFunction','rbf','KernelScale',gamma);
 
     %test
@@ -88,11 +130,6 @@ for run = 1:5
 end
 
 error = error / 5
-
-
-
-
-
 
 
 
