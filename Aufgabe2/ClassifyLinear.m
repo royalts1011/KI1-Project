@@ -128,4 +128,7 @@ for run = 1:5
 
 end
 
-error = error / 5
+error = error / 5;
+
+fprintf("Anteil falscher Vorhersagen: " + error + "\n");
+

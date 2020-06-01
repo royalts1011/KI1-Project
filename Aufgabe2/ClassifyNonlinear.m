@@ -125,11 +125,14 @@ for run = 1:5
     y_pred=predict(SVMModel_nonlinear,X_test);
 
     Y_error = abs(y_pred - Y_test);
-    error = error + sum(Y_error)/size_test;
+    error = error + sum(Y_error)/length(Y_error);
 
 end
 
-error = error / 5
+error = error / 5;
+
+fprintf("Anteil falscher Vorhersagen: " + error + "\n");
+
 
 
 
