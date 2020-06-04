@@ -9,12 +9,16 @@ clc;
 %Lade Datensatz
 load('Data.mat');
 
-C=1;
-gamma=10;
+C=700;
+gamma=71.2;
+
+% Normalize data:
+% SensorData = normc(SensorData);
 
 test_size = floor(length(Score)/5);
 
 error = 0.0;
+num_false = 0;
 
 % 5-fach Kreuzvalidierung:
 for run = 1:5
@@ -43,10 +47,15 @@ for run = 1:5
 
     %test
     y_pred=predict(SVMModel_nonlinear,X_test);
+    % round() um auf ganze Zaheln zu kommen
+    y_pred = round(y_pred);
     
     % Berechnung der Abweichung für diesen Durchlauf
     Y_error = abs(y_pred - y_test);
-    error = error + sum(Y_error) / length(Y_error);
+    
+    err_run = sum(Y_error) / length(Y_error);
+    
+    error = error + err_run;
     
 end
 

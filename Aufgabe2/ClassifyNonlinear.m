@@ -21,7 +21,9 @@ idx_bad =  find(~labels_Score);
 % nach guten und schlechten auftrennen, um die guten entsprechend zu
 % vervielfältigen.
 data_good = SensorData(idx_good, :);
+data_good = normc(data_good);
 data_bad = SensorData(idx_bad,:);
+data_bad = normc(data_bad);
 
 labeles_good = labels_Score(idx_good);
 labeles_bad = labels_Score(idx_bad);
@@ -87,7 +89,6 @@ data = data_and_labels(:,1:11);
 labels = data_and_labels(:,12);
 
 
-
 size_test = floor(length(labels)/5);
 
 error = 0.0;
@@ -106,6 +107,11 @@ for run = 1:5
     X_test = data(idx_test,:);
     Y_test = labels(idx_test);
     
+     % suffle data randomly:
+    rand_vec_test = randperm(length(idx_test));
+    X_test = X_test(rand_vec_test,:);
+    Y_test = Y_test(rand_vec_test);
+    
     % Verwednen dann die übrigen Indizes zum trainieren
     idx_train = 1:length(labels);
     idx_train_bool = ~ismember(idx_train, idx_test);
@@ -114,6 +120,11 @@ for run = 1:5
     
     X_train = data(idx_train,:);
     Y_train = labels(idx_train);
+    
+    % suffle data randomly:
+    rand_vec_train = randperm(length(idx_train));
+    X_train = X_train(rand_vec_train,:);
+    Y_train = Y_train(rand_vec_train);
     
     %Beipsielhaftes Training einer SVM. Hier wird ein linearer Kernel
     %verwendet.
@@ -126,12 +137,26 @@ for run = 1:5
 
     Y_error = abs(y_pred - Y_test);
     error = error + sum(Y_error)/length(Y_error);
-
+    
 end
 
 error = error / 5;
 
 fprintf("Anteil falscher Vorhersagen: " + error + "\n");
+
+
+
+%test run:
+
+X = SensorData;
+Y = labels_Score;
+
+SVMModel = fitcsvm(X,Y,'BoxConstraint',C,'KernelFunction','rbf','KernelScale',gamma)
+CVSVMModel = crossval(SVMModel,'KFold', 5)
+TrainedModel = CVSVMModel.Trained{1}
+kfoldLoss(CVSVMModel)
+
+
 
 
 
