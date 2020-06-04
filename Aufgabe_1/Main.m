@@ -50,9 +50,10 @@ title("X_{test} evaluated with nb");
 function [k_best,best_acc,knn_pred] = optimise_k(k_begin,k_end,X_train,Y_train,X_test,Y_test)
     k_best =  -1;
     best_acc = -1;
-    acc = 0;
+    
 
     for iter=k_begin:k_end
+        acc = 0;
         Y_pred = predict_kNN(X_train,Y_train,X_test,iter);
         for pred=1:size(Y_test,1)
             acc = acc + 1 - abs(Y_pred(pred) - Y_test(pred));
