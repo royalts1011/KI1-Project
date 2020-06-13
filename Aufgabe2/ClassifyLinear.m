@@ -7,7 +7,7 @@ clear;
 clc;
 
 % Variablen
-C=1;
+C=700;
 
 %Lade Datensatz
 load('Data.mat');
