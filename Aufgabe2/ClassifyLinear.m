@@ -7,10 +7,13 @@ clear;
 clc;
 
 % Variablen
-C=0.1;
+C=1;
 
 %Lade Datensatz
 load('Data.mat');
+
+% normalisieren der Spalten:
+SensorData = normc(SensorData);
 
 % Die Scores in binäre Labels (gut = 1, schlecht = 0) transformieren
 labels_Score = Score >= 7;
@@ -20,9 +23,8 @@ idx_bad =  find(~labels_Score);
 % nach guten und schlechten auftrennen, um die guten entsprechend zu
 % vervielfältigen.
 data_good = SensorData(idx_good, :);
-data_good = normc(data_good);
 data_bad = SensorData(idx_bad,:);
-data_bad = normc(data_bad);
+
 
 labeles_good = labels_Score(idx_good);
 labeles_bad = labels_Score(idx_bad);
@@ -107,7 +109,7 @@ for run = 1:5
     X_test = data(idx_test,:);
     Y_test = labels(idx_test);
     
-    % suffle data randomly:
+    % daten zufällig meischen:
     rand_vec_test = randperm(length(idx_test));
     X_test = X_test(rand_vec_test,:);
     Y_test = Y_test(rand_vec_test);
@@ -121,7 +123,7 @@ for run = 1:5
     X_train = data(idx_train,:);
     Y_train = labels(idx_train);
     
-    % suffle data randomly:
+    % daten zufällig meischen:
     rand_vec_train = randperm(length(idx_train));
     X_train = X_train(rand_vec_train,:);
     Y_train = Y_train(rand_vec_train);
@@ -149,12 +151,12 @@ fprintf("Anteil falscher Vorhersagen: " + error + "\n");
 
 %test run:
 
-X = SensorData;
-Y = labels_Score;
+% X = SensorData;
+% Y = labels_Score;
 
-SVMModel_linear=fitcsvm(X,Y,'BoxConstraint',C);
-CVSVMModel = crossval(SVMModel_linear,'KFold', 5)
-TrainedModel = CVSVMModel.Trained{1}
-kfoldLoss(CVSVMModel)
+% SVMModel_linear=fitcsvm(X,Y,'BoxConstraint',C);
+% CVSVMModel = crossval(SVMModel_linear,'KFold', 5)
+% TrainedModel = CVSVMModel.Trained{1}
+% kfoldLoss(CVSVMModel)
 
 

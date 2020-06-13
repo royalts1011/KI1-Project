@@ -7,11 +7,13 @@ clear;
 clc;
 
 % Variablen
-C=1.0;
-gamma=10;
+C=150.0;
+gamma=0.8;
 
 %Lade Datensatz
 load('Data.mat');
+
+SensorData = normc(SensorData);
 
 % Die Scores in binäre Labels (gut = 1, schlecht = 0) transformieren
 labels_Score = Score >= 7;
@@ -21,9 +23,7 @@ idx_bad =  find(~labels_Score);
 % nach guten und schlechten auftrennen, um die guten entsprechend zu
 % vervielfältigen.
 data_good = SensorData(idx_good, :);
-data_good = normc(data_good);
 data_bad = SensorData(idx_bad,:);
-data_bad = normc(data_bad);
 
 labeles_good = labels_Score(idx_good);
 labeles_bad = labels_Score(idx_bad);
@@ -107,7 +107,7 @@ for run = 1:5
     X_test = data(idx_test,:);
     Y_test = labels(idx_test);
     
-     % suffle data randomly:
+     % daten zufällig meischen:
     rand_vec_test = randperm(length(idx_test));
     X_test = X_test(rand_vec_test,:);
     Y_test = Y_test(rand_vec_test);
@@ -121,13 +121,14 @@ for run = 1:5
     X_train = data(idx_train,:);
     Y_train = labels(idx_train);
     
-    % suffle data randomly:
+    % sdaten zufällig meischen:
     rand_vec_train = randperm(length(idx_train));
     X_train = X_train(rand_vec_train,:);
     Y_train = Y_train(rand_vec_train);
     
-    %Beipsielhaftes Training einer SVM. Hier wird ein linearer Kernel
+    %Beipsielhaftes Training einer SVM. Hier wird ein radial basis function (rbf) Kernel
     %verwendet.
+
 
      %training
     SVMModel_nonlinear=fitcsvm(X_train,Y_train,'BoxConstraint',C,'KernelFunction','rbf','KernelScale',gamma);
@@ -140,7 +141,7 @@ for run = 1:5
     
 end
 
-error = error / 5;
+error = error / 5;  % durch 5 für den Druchschnitt der 5 Durchläufe
 
 fprintf("Anteil falscher Vorhersagen: " + error + "\n");
 
@@ -148,13 +149,13 @@ fprintf("Anteil falscher Vorhersagen: " + error + "\n");
 
 %test run:
 
-X = SensorData;
-Y = labels_Score;
+% X = SensorData;
+% Y = labels_Score;
 
-SVMModel = fitcsvm(X,Y,'BoxConstraint',C,'KernelFunction','rbf','KernelScale',gamma)
-CVSVMModel = crossval(SVMModel,'KFold', 5)
-TrainedModel = CVSVMModel.Trained{1}
-kfoldLoss(CVSVMModel)
+% SVMModel = fitcsvm(X,Y,'BoxConstraint',C,'KernelFunction','rbf','KernelScale',gamma)
+% CVSVMModel = crossval(SVMModel,'KFold', 5)
+% TrainedModel = CVSVMModel.Trained{1}
+% kfoldLoss(CVSVMModel)
 
 
 
