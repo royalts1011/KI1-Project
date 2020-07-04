@@ -36,15 +36,15 @@ B_t = [0.5, 0.0;
         1, 0.0;
         0.0, 1];
 
-P_t = [0.1, 0, 0, 0; 
-        0, 0.1, 0, 0; 
-        0, 0, 0.1, 0; 
-        0, 0, 0, 0.1];
+P_t = [0.0, 0, 0, 0; 
+        0, 0.0, 0, 0; 
+        0, 0, 0.0, 0; 
+        0, 0, 0, 0.0];
  
-Q_t = [1.5, 0, 0, 0; 
-        0, 1.5, 0, 0; 
-        0, 0, 1.5, 0; 
-        0, 0, 0, 1.5];
+Q_t = [0.01, 0, 0, 0; 
+        0, 0.01, 0, 0; 
+        0, 0, 0.01, 0; 
+        0, 0, 0, 0.01];
 
 
 % init - Update:
@@ -58,14 +58,8 @@ H_t =  [1, 0, 0, 0;
         0, 1, 0 ,0];
        
 
-R_t = [2, 0; 
-        0, 2];  
-        
-
-K = [0.5, 0.5
-    0.5, 0.5;
-    0.5, 0.5;
-    0.5, 0.5];
+R_t = [0.5, 0; 
+        0, 0.5];  
     
 
 for t = 1:72
@@ -79,16 +73,22 @@ for t = 1:72
     % Update
     z_t = tracking(:,t);
     
+    K = (P_t * H_t') / (H_t * P_t * H_t' + R_t);
+    
     x_t = x_t + K * (z_t - H_t * x_t);
     
     P_t = P_t - (K * H_t * P_t);
-    
-    K = (P_t * H_t') / (H_t * P_t * H_t' + R_t);
     
     p_filtered(:,t) = x_t(1:2);
    
 end
 
+% Euklidischer Abstand zwischen p_filtered und ground trouth
+erg = (p_filtered - p).^2;
+erg = sqrt(erg(1,:) + erg(2,:));
+erg = sum(erg);
+
+disp(['Error: ', num2str(erg)])
 
 %Visualization
 figure
