@@ -70,14 +70,15 @@ for t = 1:72
     
     
     % Update:
-    z_t = tracking(:,t);                             % Update Tracking
+    z_t = tracking(:,t);                               % Update Tracking
     
     K = (P_t * H_t') / (H_t * P_t * H_t' + R_t);     % Berechning Kalman-gain
     
     x_t = x_t + K * (z_t - H_t * x_t);               % update des Zustandes mit Gewichtung durch K
     P_t = P_t - (K * H_t * P_t);                     % update der Kovarianzmatrix mit Gewichtung durch K
     
-    p_filtered(:,t) = x_t(1:2);                      % speicherung des gefilterten Zustandes.
+    % speicherung des gefilterten Zustandes.
+    p_filtered(:,t) = x_t(1:2);
    
 end
 
