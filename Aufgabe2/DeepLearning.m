@@ -28,7 +28,7 @@ augmenter = imageDataAugmenter( ...
     'RandXReflection',[1], ...
     'RandYReflection',[1]);
 
-augImds = augmentedImageDatastore([224 224 3],imdsTrain,'DataAugmentation',imageAugmenter);
+augImds = augmentedImageDatastore([224 224 3],imdsTrain,'DataAugmentation',augmenter);
 
 batchedData = preview(augImds);
 imshow(imtile(batchedData.input))
